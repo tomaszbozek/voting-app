@@ -1,28 +1,64 @@
 package com.tomaszbozek.example.vote.vote_ui_api;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.SpringApplication;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
+@RequestMapping("/api/vote")
 public class VoteApi {
 
-    private final RedisTemplate<String, String> redisTemplate;
+    @Value("${option.a}")
+    private String optionA;
 
-    @Autowired
-    public VoteApi(RedisTemplate<String, String> redisTemplate) {
+    @Value("${option.b}")
+    private String optionB;
+
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    public VoteApi(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
-    @GetMapping("/hello")
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-        redisTemplate.opsForValue().set("votes",
-                String.format("{'voter_id': %s, 'vote': %s}", UUID.randomUUID(), name));
-        return String.format("Hello %s!", name);
+    @GetMapping("/options")
+    public ResponseEntity<Map<String, String>> getOptions() {
+        Map<String, String> options = new HashMap<>();
+        options.put("optionA", optionA);
+        options.put("optionB", optionB);
+        return ResponseEntity.ok(options);
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<String> vote(HttpServletRequest request, HttpServletResponse response,
+                                       @RequestBody Map<String, String> voteData) {
+        String voterId = getVoterId(request);
+        String vote = voteData.get("vote");
+        redisTemplate.opsForList().rightPush("votes", "{\"voter_id\":\"" + voterId + "\",\"vote\":\"" + vote + "\"}");
+
+        Cookie cookie = new Cookie("voter_id", voterId);
+        cookie.setMaxAge(365 * 24 * 60 * 60);
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok("Vote received");
+    }
+
+    private String getVoterId(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("voter_id".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return UUID.randomUUID().toString();
     }
 }

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vote</title>
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+    <script>
+        async function getOptions() {
+            const response = await fetch('/api/vote/options');
+            const data = await response.json();
+            document.getElementById('optionA').value = data.optionA;
+            document.getElementById('labelA').innerText = data.optionA;
+            document.getElementById('optionB').value = data.optionB;
+            document.getElementById('labelB').innerText = data.optionB;
+        }
+
+        async function vote(event) {
+            event.preventDefault();
+            const vote = document.querySelector('input[name="vote"]:checked').value;
+            const response = await fetch('/api/vote/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ vote })
+            });
+            const message = await response.text();
+            alert(message);
+        }
+
+        window.onload = getOptions;
+    </script>
+</head>
+<body>
+<h1>Vote for your favorite option</h1>
+<form onsubmit="vote(event)">
+    <input type="radio" name="vote" value="" id="optionA">
+    <label for="optionA" id="labelA"></label><br>
+    <input type="radio" name="vote" value="" id="optionB">
+    <label for="optionB" id="labelB"></label><br>
+    <button type="submit">Vote</button>
+</form>
+</body>
+</html>
