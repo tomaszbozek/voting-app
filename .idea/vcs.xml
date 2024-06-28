@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$/../text-producer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tomaszbozek/carrent-api" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tomaszbozek/project-euler-solutions" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/../tomaszbozek/voting-app" vcs="Git" />
+  </component>
+</project>

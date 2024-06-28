@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/../voting-app/vote-ui-api/pom.xml" />
+        <option value="$PROJECT_DIR$/../voting-app/vote-worker-service/pom.xml" />
+        <option value="$USER_HOME$/Downloads/carrent/pom.xml" />
+        <option value="$USER_HOME$/Downloads/carrent-api/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/carrent-api/carrent-approaches/carrent-api-1/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/carrent-api/carrent-approaches/carrent-api-2/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/carrent-api/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/carrent-api/carrent-approaches/carrent-api-3/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/voting-app/vote-ui-api/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/voting-app/vote-worker-service/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/../tomaszbozek/carrent-api/carrent-approaches/carrent-api-1/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/carrent-api/carrent-approaches/carrent-api-2/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/carrent-api/carrent-approaches/carrent-api-3/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/voting-app/vote-ui-api/pom.xml" />
+        <option value="$PROJECT_DIR$/../tomaszbozek/voting-app/vote-worker-service/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="corretto-21" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

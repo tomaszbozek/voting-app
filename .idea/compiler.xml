@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="carrent-api-1" target="21" />
+      <module name="carrent-api-1 (1)" target="1.8" />
+      <module name="carrent-api-1 (2)" target="1.8" />
+      <module name="carrent-api-2" target="1.8" />
+      <module name="carrent-api-3" target="21" />
+      <module name="carrent-parent" target="1.5" />
+      <module name="vote-ui-api" target="21" />
+      <module name="vote-worker-service" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="carrent-api-1" options="-parameters" />
+      <module name="carrent-api-2" options="" />
+      <module name="carrent-api-3" options="-parameters" />
+      <module name="vote-ui-api" options="-parameters" />
+      <module name="vote-worker-service" options="-parameters" />
+    </option>
+  </component>
+</project>
