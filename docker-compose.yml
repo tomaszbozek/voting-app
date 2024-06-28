@@ -3,8 +3,7 @@
 services:
   vote:
     build: 
-      context: ./vote
-      target: dev
+      context: ./vote-ui-api
     depends_on:
       redis:
         condition: service_healthy
@@ -24,7 +23,7 @@ services:
 
   worker:
     build:
-      context: ./worker
+      context: ./vote-worker-service
     depends_on:
       redis:
         condition: service_healthy 
