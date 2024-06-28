@@ -16,9 +16,9 @@ public class RedisConfig {
     }
 
     @Bean
-    RedisTemplate<String, String> redisTemplate(@Value("${spring.redis.host}") String host,
+    RedisTemplate<String, Object> redisTemplate(@Value("${spring.redis.host}") String host,
                                                 @Value("${spring.redis.port}") int port) {
-        RedisTemplate<String, String> template = new RedisTemplate<>();
+        RedisTemplate<String, Object> template = new RedisTemplate<>();
         template.setConnectionFactory(redisConnectionFactory(host, port));
         return template;
     }

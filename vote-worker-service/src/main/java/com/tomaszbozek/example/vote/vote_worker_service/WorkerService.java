@@ -11,11 +11,11 @@ import java.util.UUID;
 @Service
 public class WorkerService {
 
-    private final RedisTemplate<String, String> template;
+    private final RedisTemplate<String, Object> template;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public WorkerService(RedisTemplate<String, String> template, JdbcTemplate jdbcTemplate) {
+    public WorkerService(RedisTemplate<String, Object> template, JdbcTemplate jdbcTemplate) {
         this.template = template;
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -24,7 +24,7 @@ public class WorkerService {
     public void start() {
         while (true) {
             System.out.println("working...");
-            String votes = template.opsForList().leftPop("votes");
+            Object votes = template.opsForList().leftPop("votes");
             System.out.println("votes: " + votes);
             // TODO FIXME: WATCH OUT FOR SQL INJECTION
             int result = jdbcTemplate.update(
