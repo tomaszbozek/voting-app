@@ -1,10 +1,18 @@
-# Start with the Amazon Corretto 21 image
-FROM amazoncorretto:21 as build
+# Use an official Amazon Corretto 21 image
+FROM amazoncorretto:21 AS build
 
-# Install Maven
+# Install Maven 3.8.6
 RUN yum update -y && \
-    yum install -y maven && \
+    yum install -y wget && \
+    wget https://downloads.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz && \
+    tar xzf apache-maven-3.8.6-bin.tar.gz -C /opt && \
+    ln -s /opt/apache-maven-3.8.6 /opt/maven && \
+    ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
     yum clean all
+
+# Set environment variables for Maven
+ENV MAVEN_HOME /opt/maven
+ENV PATH ${MAVEN_HOME}/bin:${PATH}
 
 # Set the working directory in the container
 WORKDIR /app
@@ -26,7 +34,7 @@ FROM amazoncorretto:21
 WORKDIR /app
 
 # Copy the packaged jar from the build stage
-COPY --from=build /app/target/vote-0.0.1-SNAPSHOT.jar ./vote.jar
+COPY --from=build /app/target/vote-ui-api-0.0.1-SNAPSHOT.jar ./vote.jar
 
 # Expose the port the application runs on
 EXPOSE 8080
