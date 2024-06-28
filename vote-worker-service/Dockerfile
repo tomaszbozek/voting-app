@@ -1,23 +1,35 @@
-# Use Maven to build the project
-FROM maven:3.8.6-openjdk-21-slim AS build
+# Start with the Amazon Corretto 21 image
+FROM amazoncorretto:21 as build
+
+# Install Maven
+RUN yum update -y && \
+    yum install -y maven && \
+    yum clean all
+
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the pom.xml and source code to the container
+# Copy the pom.xml and download the dependencies
 COPY pom.xml .
+RUN mvn dependency:go-offline -B
+
+# Copy the source code into the container
 COPY src ./src
 
 # Package the application
-RUN mvn clean package -DskipTests
+RUN mvn package -DskipTests
 
-# Use a separate image to run the application
-FROM openjdk:21-slim
+# Use Amazon Corretto 21 for the runtime
+FROM amazoncorretto:21
+
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the packaged jar file from the build stage
-COPY --from=build /app/target/vote-worker-service-1.0.0.jar app.jar
+# Copy the packaged jar from the build stage
+COPY --from=build /app/target/vote-worker-service-0.0.1-SNAPSHOT.jar ./vote.jar
 
-# Expose the application's port
+# Expose the port the application runs on
 EXPOSE 8081
 
-# Define the entry point for the container
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Command to run the application
+ENTRYPOINT ["java", "-jar", "vote.jar"]
