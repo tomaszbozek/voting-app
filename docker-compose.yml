@@ -17,6 +17,8 @@ services:
      - ./vote:/usr/local/app
     ports:
       - "8080:8080"
+    environment:
+      - SPRING_REDIS_HOST=redis
     networks:
       - front-tier
       - back-tier
@@ -34,11 +36,14 @@ services:
     #TODO FIXME: worker won't be visible in the future from inside of the application
     ports:
       - "8081:8081"
+    environment:
+      - SPRING_REDIS_HOST=redis
     networks:
       - back-tier
 
   redis:
     image: redis:alpine
+    container_name: redis
     volumes:
       - "./healthchecks:/healthchecks"
     healthcheck:
