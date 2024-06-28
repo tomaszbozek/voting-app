@@ -1,9 +1,9 @@
 # Use an official Amazon Corretto 21 image
 FROM amazoncorretto:21 AS build
 
-# Install Maven 3.8.6
+# Install Maven 3.8.6 and necessary utilities
 RUN yum update -y && \
-    yum install -y wget tar && \
+    yum install -y wget tar gzip && \
     wget https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz && \
     tar xzf apache-maven-3.8.6-bin.tar.gz -C /opt && \
     ln -s /opt/apache-maven-3.8.6 /opt/maven && \
