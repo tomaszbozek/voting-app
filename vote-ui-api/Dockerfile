@@ -3,8 +3,8 @@ FROM amazoncorretto:21 AS build
 
 # Install Maven 3.8.6
 RUN yum update -y && \
-    yum install -y wget && \
-    wget https://downloads.apache.org/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz && \
+    yum install -y wget tar && \
+    wget https://archive.apache.org/dist/maven/maven-3/3.8.6/binaries/apache-maven-3.8.6-bin.tar.gz && \
     tar xzf apache-maven-3.8.6-bin.tar.gz -C /opt && \
     ln -s /opt/apache-maven-3.8.6 /opt/maven && \
     ln -s /opt/maven/bin/mvn /usr/bin/mvn && \
