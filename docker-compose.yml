@@ -1,0 +1,70 @@
+# docker-compose v1.27+ required
+
+services:
+  vote:
+    build: 
+      context: ./vote
+      target: dev
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck: 
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    volumes:
+     - ./vote:/usr/local/app
+    ports:
+      - "8080:8080"
+    networks:
+      - front-tier
+      - back-tier
+
+  worker:
+    build:
+      context: ./worker
+    depends_on:
+      redis:
+        condition: service_healthy 
+      db:
+        condition: service_healthy
+    volumes:
+      - ./worker:/usr/local/app
+    #TODO FIXME: worker won't be visible in the future from inside of the application
+    ports:
+      - "8081:8081"
+    networks:
+      - back-tier
+
+  redis:
+    image: redis:alpine
+    volumes:
+      - "./healthchecks:/healthchecks"
+    healthcheck:
+      test: /healthchecks/redis.sh
+      interval: "5s"
+    networks:
+      - back-tier
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+      - "./healthchecks:/healthchecks"
+    healthcheck:
+      test: /healthchecks/postgres.sh
+      interval: "5s"
+    networks:
+      - back-tier
+
+volumes:
+  db-data:
+
+networks:
+  front-tier:
+  back-tier:
