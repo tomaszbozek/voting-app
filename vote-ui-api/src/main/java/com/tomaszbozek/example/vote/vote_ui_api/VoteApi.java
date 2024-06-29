@@ -33,6 +33,8 @@ public class VoteApi {
         Map<String, String> options = new HashMap<>();
         options.put("optionA", optionA);
         options.put("optionB", optionB);
+        options.put("optionAvalue", "a");
+        options.put("optionBvalue", "b");
         return ResponseEntity.ok(options);
     }
 
