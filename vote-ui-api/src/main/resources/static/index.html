@@ -10,9 +10,9 @@
 <body ng-controller="VoteController as ctrl">
 <h1>Vote for your favorite option</h1>
 <form ng-submit="ctrl.submitVote()">
-    <input type="radio" name="vote" ng-model="ctrl.vote" ng-value="ctrl.options.optionA" id="optionA">
+    <input type="radio" name="vote" ng-model="ctrl.vote" ng-value="a" id="optionA">
     <label for="optionA">{{ctrl.options.optionA}}</label><br>
-    <input type="radio" name="vote" ng-model="ctrl.vote" ng-value="ctrl.options.optionB" id="optionB">
+    <input type="radio" name="vote" ng-model="ctrl.vote" ng-value="b" id="optionB">
     <label for="optionB">{{ctrl.options.optionB}}</label><br>
     <button type="submit">Vote</button>
 </form>
