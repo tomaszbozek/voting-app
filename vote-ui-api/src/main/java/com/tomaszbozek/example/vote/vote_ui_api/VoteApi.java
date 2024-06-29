@@ -4,7 +4,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +22,9 @@ public class VoteApi {
     @Value("${option.b}")
     private String optionB;
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final StringRedisTemplate redisTemplate;
 
-    public VoteApi(RedisTemplate<String, Object> redisTemplate) {
+    public VoteApi(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
 
@@ -41,8 +41,7 @@ public class VoteApi {
                                        @RequestBody Map<String, String> voteData) {
         String voterId = getVoterId(request);
         String vote = voteData.get("vote");
-        redisTemplate.opsForList().rightPush("votes", "{\"voter_id\":\"" + voterId + "\",\"vote\":\"" + vote + "\"}");
-
+        redisTemplate.convertAndSend("votes", "{\"voter_id\":\"" + voterId + "\",\"vote\":\"" + vote + "\"}");
         Cookie cookie = new Cookie("voter_id", voterId);
         cookie.setMaxAge(365 * 24 * 60 * 60);
         response.addCookie(cookie);

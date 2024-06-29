@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 
 @Configuration
 public class RedisConfig {
@@ -16,9 +17,9 @@ public class RedisConfig {
     }
 
     @Bean
-    RedisTemplate<String, Object> redisTemplate(@Value("${spring.redis.host}") String host,
+    StringRedisTemplate redisTemplate(@Value("${spring.redis.host}") String host,
                                                 @Value("${spring.redis.port}") int port) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
+        StringRedisTemplate template = new StringRedisTemplate();
         template.setConnectionFactory(redisConnectionFactory(host, port));
         return template;
     }
