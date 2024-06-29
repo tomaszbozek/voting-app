@@ -37,7 +37,7 @@ WORKDIR /app
 COPY --from=build /app/target/vote-worker-service-0.0.1-SNAPSHOT.jar ./vote.jar
 
 # Expose the port the application runs on
-EXPOSE 8080
+EXPOSE 8081
 
 # Command to run the application
 ENTRYPOINT ["java", "-jar", "vote.jar"]
