@@ -1,35 +1,37 @@
 package com.tomaszbozek.example.vote.vote_worker_service;
 
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.Clock;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class WorkerService {
 
-    private final RedisTemplate<String, Object> template;
-    private final JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    public WorkerService(RedisTemplate<String, Object> template, JdbcTemplate jdbcTemplate) {
-        this.template = template;
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private final RedisTemplate<String, String> template;
+    private final VotesRepository votesRepository;
+    private final Duration timeLimit = Duration.ofSeconds(10);
 
     @PostConstruct
     public void start() {
-        while (true) {
+        Instant start = now();
+        while (isTimeLimitExceeded(start)) {
             System.out.println("working...");
-            Object votes = template.opsForList().leftPop("votes");
-            System.out.println("votes: " + votes);
-            // TODO FIXME: WATCH OUT FOR SQL INJECTION
-            int result = jdbcTemplate.update(
-                    String.format("INSERT INTO VOTES (id, vote) VALUES (%s, %s);", UUID.randomUUID(), UUID.randomUUID())
-            );
+            String vote = template.opsForList().leftPop("vote");
+            System.out.println("vote: " + vote);
+            if(vote == null || vote.isBlank()) {
+                continue;
+            }
+            Vote result = votesRepository.save(new Vote(
+                    UUID.randomUUID(),
+                    vote
+            ));
             System.out.println("insert result: " + result);
             try {
                 Thread.sleep(2000);
@@ -37,5 +39,14 @@ public class WorkerService {
                 throw new RuntimeException(e);
             }
         }
+        int i = 0;
+    }
+
+    private boolean isTimeLimitExceeded(Instant start) {
+        return now().minusSeconds(timeLimit.toSeconds()).compareTo(start) < 0;
+    }
+
+    private static Instant now() {
+        return Instant.now(Clock.systemUTC());
     }
 }
