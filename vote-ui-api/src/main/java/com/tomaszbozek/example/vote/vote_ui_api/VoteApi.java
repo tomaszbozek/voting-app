@@ -38,7 +38,7 @@ public class VoteApi {
         return ResponseEntity.ok(options);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<String> vote(HttpServletRequest request, HttpServletResponse response,
                                        @RequestBody Map<String, String> voteData) {
         String voterId = getVoterId(request);
