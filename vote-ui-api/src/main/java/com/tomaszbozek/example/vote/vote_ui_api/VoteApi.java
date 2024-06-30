@@ -3,6 +3,7 @@ package com.tomaszbozek.example.vote.vote_ui_api;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/votes")
 public class VoteApi {
@@ -41,6 +43,7 @@ public class VoteApi {
     @PostMapping
     public ResponseEntity<String> vote(HttpServletRequest request, HttpServletResponse response,
                                        @RequestBody Map<String, String> voteData) {
+        log.debug("voteData:{}", voteData);
         String voterId = getVoterId(request);
         String vote = voteData.get("vote");
         redisTemplate.convertAndSend("vote", "{\"voter_id\":\"" + voterId + "\",\"vote\":\"" + vote + "\"}");
