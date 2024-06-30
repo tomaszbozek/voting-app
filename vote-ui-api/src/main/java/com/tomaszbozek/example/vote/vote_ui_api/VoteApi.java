@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/vote")
+@RequestMapping("/api/votes")
 public class VoteApi {
 
     @Value("${option.a}")
@@ -43,7 +43,7 @@ public class VoteApi {
                                        @RequestBody Map<String, String> voteData) {
         String voterId = getVoterId(request);
         String vote = voteData.get("vote");
-        redisTemplate.convertAndSend("votes", "{\"voter_id\":\"" + voterId + "\",\"vote\":\"" + vote + "\"}");
+        redisTemplate.convertAndSend("vote", "{\"voter_id\":\"" + voterId + "\",\"vote\":\"" + vote + "\"}");
         Cookie cookie = new Cookie("voter_id", voterId);
         cookie.setMaxAge(365 * 24 * 60 * 60);
         response.addCookie(cookie);

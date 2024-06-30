@@ -1,5 +1,6 @@
 package com.tomaszbozek.example.vote.vote_worker_service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,7 +36,7 @@ public class RedisConfig {
     }
 
     @Bean
-    VotesReceiver receiver(VotesRepository votesRepository) {
-        return new VotesReceiver(votesRepository);
+    VotesReceiver receiver(VotesRepository votesRepository, ObjectMapper objectMapper) {
+        return new VotesReceiver(votesRepository, objectMapper);
     }
 }

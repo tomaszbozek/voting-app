@@ -7,13 +7,13 @@ angular.module('voteApp', [])
         vm.hostname = window.location.hostname;
 
         vm.getOptions = function() {
-            $http.get('/api/vote/options').then(function(response) {
+            $http.get('/api/votes/options').then(function(response) {
                 vm.options = response.data;
             });
         };
 
         vm.submitVote = function() {
-            $http.post('/api/vote/', { vote: vm.vote }).then(function(response) {
+            $http.post('/api/votes', { vote: vm.vote }).then(function(response) {
                 alert(response.data);
             }, function(error) {
                 alert('Error: ' + error.data);
