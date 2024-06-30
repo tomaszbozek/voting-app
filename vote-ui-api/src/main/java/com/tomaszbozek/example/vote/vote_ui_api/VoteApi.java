@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,18 +26,16 @@ public class VoteApi {
     }
 
     @GetMapping("/options")
-    public ResponseEntity<Map<String, String>> getOptions() {
-        Map<String, String> options = new HashMap<>();
-        options.put("match1.optionA", "Poland");
-        options.put("match1.optionB", "France");
-        options.put("match1.optionA.value", "a");
-        options.put("match1.optionB.value", "b");
-        options.put("match2.optionA", "England");
-        options.put("match2.optionB", "Slovakia");
-        options.put("match2.optionA.value", "a");
-        options.put("match2.optionB.value", "b");
-        return ResponseEntity.ok(options);
+    public ResponseEntity<List<OptionDto>> getOptions() {
+        return ResponseEntity.ok(List.of(
+                new OptionDto("match1", "a", "Poland"),
+                new OptionDto("match1", "b", "France"),
+                new OptionDto("match2", "a", "England"),
+                new OptionDto("match2", "b", "Slovakia")
+        ));
     }
+
+    public record OptionDto(String name, String value, String country){}
 
     @PostMapping
     public ResponseEntity<VoteDto> vote(HttpServletRequest request, HttpServletResponse response,
@@ -44,12 +43,12 @@ public class VoteApi {
         log.debug("voteData:{}", voteData);
         String voterId = getVoterId(request);
         String vote = voteData.get("vote");
-        VoteDto voteDto = new VoteDto(voterId, vote);
+        String name = voteData.get("name");
+        VoteDto voteDto = new VoteDto(voterId, name, vote);
         redisTemplate.convertAndSend("vote", voteDto);
         Cookie cookie = new Cookie("voter_id", voterId);
         cookie.setMaxAge(365 * 24 * 60 * 60);
         response.addCookie(cookie);
-
         return ResponseEntity.ok(voteDto);
     }
 
@@ -65,5 +64,5 @@ public class VoteApi {
         return UUID.randomUUID().toString();
     }
 
-    public record VoteDto(String voterId, String vote){}
+    public record VoteDto(String voterId, String name, String vote){}
 }

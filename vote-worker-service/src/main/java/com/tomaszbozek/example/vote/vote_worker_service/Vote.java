@@ -17,6 +17,7 @@ import java.util.UUID;
 public class Vote {
     @Id
     private UUID id;
+    private String name;
     private String vote;
 }
 

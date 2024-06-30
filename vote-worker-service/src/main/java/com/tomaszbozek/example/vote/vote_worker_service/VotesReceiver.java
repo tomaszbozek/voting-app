@@ -26,6 +26,7 @@ public class VotesReceiver {
         log.debug("deserialized value: {}", voteDto);
         Vote result = votesRepository.save(new Vote(
                 UUID.randomUUID(),
+                voteDto.name(),
                 voteDto.vote()
         ));
         log.debug("insert result: {}", result);
@@ -40,5 +41,5 @@ public class VotesReceiver {
         return counter.get();
     }
 
-    private record VoteDto(String voterId, String vote){}
+    private record VoteDto(String voterId, String name, String vote){}
 }
