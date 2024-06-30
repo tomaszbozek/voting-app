@@ -127,3 +127,10 @@ button.b{
   width:50%;
   height:100%;
 }
+
+.flag-icon {
+    width: 20px;
+    height: 15px;
+    margin-right: 10px;
+    vertical-align: middle;
+}

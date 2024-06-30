@@ -32,8 +32,10 @@ services:
      - ./vote:/usr/local/app
     ports:
       - "8080:8080"
+      - "5004:5004" # Only needed if debugging is enabled
     environment:
       - SPRING_REDIS_HOST=redis
+      - JAVA_DEBUG="true" # Set to "false" or remove to disable debugging
     networks:
       - front-tier
       - back-tier
@@ -51,8 +53,10 @@ services:
     #TODO FIXME: worker won't be visible in the future from inside of the application
     ports:
       - "8081:8081"
+      - "5005:5005" # Only needed if debugging is enabled
     environment:
       - SPRING_REDIS_HOST=redis
+      - JAVA_DEBUG="true" # Set to "false" or remove to disable debugging
     networks:
       - back-tier
 

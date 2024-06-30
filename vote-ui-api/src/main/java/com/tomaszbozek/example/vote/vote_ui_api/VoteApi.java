@@ -18,12 +18,6 @@ import java.util.UUID;
 @RequestMapping("/api/votes")
 public class VoteApi {
 
-    @Value("${option.a}")
-    private String optionA;
-
-    @Value("${option.b}")
-    private String optionB;
-
     private final StringRedisTemplate redisTemplate;
 
     public VoteApi(StringRedisTemplate redisTemplate) {
@@ -33,25 +27,30 @@ public class VoteApi {
     @GetMapping("/options")
     public ResponseEntity<Map<String, String>> getOptions() {
         Map<String, String> options = new HashMap<>();
-        options.put("optionA", optionA);
-        options.put("optionB", optionB);
-        options.put("optionAvalue", "a");
-        options.put("optionBvalue", "b");
+        options.put("match1.optionA", "Poland");
+        options.put("match1.optionB", "France");
+        options.put("match1.optionA.value", "a");
+        options.put("match1.optionB.value", "b");
+        options.put("match2.optionA", "England");
+        options.put("match2.optionB", "Slovakia");
+        options.put("match2.optionA.value", "a");
+        options.put("match2.optionB.value", "b");
         return ResponseEntity.ok(options);
     }
 
     @PostMapping
-    public ResponseEntity<String> vote(HttpServletRequest request, HttpServletResponse response,
+    public ResponseEntity<VoteDto> vote(HttpServletRequest request, HttpServletResponse response,
                                        @RequestBody Map<String, String> voteData) {
         log.debug("voteData:{}", voteData);
         String voterId = getVoterId(request);
         String vote = voteData.get("vote");
-        redisTemplate.convertAndSend("vote", "{\"voter_id\":\"" + voterId + "\",\"vote\":\"" + vote + "\"}");
+        VoteDto voteDto = new VoteDto(voterId, vote);
+        redisTemplate.convertAndSend("vote", voteDto);
         Cookie cookie = new Cookie("voter_id", voterId);
         cookie.setMaxAge(365 * 24 * 60 * 60);
         response.addCookie(cookie);
 
-        return ResponseEntity.ok("Vote received");
+        return ResponseEntity.ok(voteDto);
     }
 
     private String getVoterId(HttpServletRequest request) {
@@ -65,4 +64,6 @@ public class VoteApi {
         }
         return UUID.randomUUID().toString();
     }
+
+    public record VoteDto(String voterId, String vote){}
 }

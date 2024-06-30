@@ -39,5 +39,12 @@ COPY --from=build /app/target/vote-worker-service-0.0.1-SNAPSHOT.jar ./vote.jar
 # Expose the port the application runs on
 EXPOSE 8081
 
+# Expose the debugging port
+EXPOSE 5005
+
+# Copy the entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Command to run the application
-ENTRYPOINT ["java", "-jar", "vote.jar"]
+ENTRYPOINT ["/entrypoint.sh"]

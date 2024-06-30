@@ -39,5 +39,12 @@ COPY --from=build /app/target/vote-ui-api-0.0.1-SNAPSHOT.jar ./vote.jar
 # Expose the port the application runs on
 EXPOSE 8080
 
+# Expose the debugging port
+EXPOSE 5004
+
+# Copy the entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 # Command to run the application
-ENTRYPOINT ["java", "-jar", "vote.jar"]
+ENTRYPOINT ["/entrypoint.sh"]

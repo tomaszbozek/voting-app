@@ -90,12 +90,12 @@ body{
 
 #choice .choice.firstTeam{
   color: #00cbca;
-  float: right;
+  float: left;
 }
 
 #choice .choice.secondTeam{
   color: #2196f3;
-  float: left;
+  float: right;
 }
 #background-stats{
   z-index:1;
