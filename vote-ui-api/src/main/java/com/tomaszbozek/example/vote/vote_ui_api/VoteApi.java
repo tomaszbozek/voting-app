@@ -69,5 +69,6 @@ public class VoteApi {
         return UUID.randomUUID().toString();
     }
 
+    // TODO FIXME: null safety and defensive programming
     public record VoteDto(String voterId, String name, String vote){}
 }

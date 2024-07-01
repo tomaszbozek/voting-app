@@ -4,6 +4,7 @@ angular.module('voteApp', [])
 
         vm.options = [];
         vm.vote = null;
+        vm.name = null;
         vm.hostname = window.location.hostname;
 
         vm.getOptions = function() {
@@ -36,7 +37,7 @@ angular.module('voteApp', [])
         };
 
         vm.submitVote = function() {
-            $http.post('/api/votes', { vote: vm.vote }).then(function(response) {
+            $http.post('/api/votes', { vote: vm.vote, name: vm.name }).then(function(response) {
                 console.log(response.data);
             }, function(error) {
                 console.error('Error:', error.data);

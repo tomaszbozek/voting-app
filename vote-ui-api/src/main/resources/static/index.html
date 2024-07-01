@@ -12,6 +12,7 @@
 <form ng-submit="ctrl.submitVote()">
     <div ng-repeat="option in ctrl.options">
         <input type="radio" name="vote" ng-model="ctrl.vote" ng-value="option.value" id="option{{option.value}}">
+        <input type="hidden" name="name" ng-model="ctrl.name" ng-value="option.name" id="option{{option.name}}">
         <label for="option{{option.value}}">
             <img ng-src="{{option.flag}}" alt="{{option.name}} flag" class="flag-icon"> {{option.name}}
         </label><br>
