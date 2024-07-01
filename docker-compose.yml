@@ -16,8 +16,8 @@ services:
     networks:
       - front-tier
       - back-tier
-    security_opt:
-      - apparmor=unconfined
+#    security_opt:
+#      - apparmor=unconfined
   vote:
     build: 
       context: ./vote-ui-api
@@ -41,8 +41,8 @@ services:
     networks:
       - front-tier
       - back-tier
-    security_opt:
-      - apparmor=unconfined
+#    security_opt:
+#      - apparmor=unconfined
 
   worker:
     build:
@@ -63,8 +63,8 @@ services:
       - JAVA_DEBUG="true" # Set to "false" or remove to disable debugging
     networks:
       - back-tier
-    security_opt:
-      - apparmor=unconfined
+#    security_opt:
+#      - apparmor=unconfined
 
   redis:
     image: redis:alpine
@@ -76,8 +76,8 @@ services:
       interval: "5s"
     networks:
       - back-tier
-    security_opt:
-      - apparmor=unconfined
+#    security_opt:
+#      - apparmor=unconfined
 
   db:
     image: postgres:15-alpine
@@ -92,8 +92,8 @@ services:
       interval: "5s"
     networks:
       - back-tier
-    security_opt:
-      - apparmor=unconfined
+#    security_opt:
+#      - apparmor=unconfined
 
 volumes:
   db-data:

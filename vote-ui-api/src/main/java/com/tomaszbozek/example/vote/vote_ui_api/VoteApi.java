@@ -1,36 +1,36 @@
 package com.tomaszbozek.example.vote.vote_ui_api;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/votes")
 public class VoteApi {
 
     private final StringRedisTemplate redisTemplate;
-
-    public VoteApi(StringRedisTemplate redisTemplate) {
-        this.redisTemplate = redisTemplate;
-    }
+    private final ObjectMapper objectMapper;
 
     @GetMapping("/options")
     public ResponseEntity<List<OptionDto>> getOptions() {
         return ResponseEntity.ok(List.of(
                 new OptionDto("match1", "a", "Poland"),
                 new OptionDto("match1", "b", "France"),
-                new OptionDto("match2", "a", "England"),
+                new OptionDto("match2", "a", "Ukraine"),
                 new OptionDto("match2", "b", "Slovakia")
         ));
     }
@@ -45,11 +45,16 @@ public class VoteApi {
         String vote = voteData.get("vote");
         String name = voteData.get("name");
         VoteDto voteDto = new VoteDto(voterId, name, vote);
-        redisTemplate.convertAndSend("vote", voteDto);
+        redisTemplate.convertAndSend("vote", asString(voteDto));
         Cookie cookie = new Cookie("voter_id", voterId);
         cookie.setMaxAge(365 * 24 * 60 * 60);
         response.addCookie(cookie);
         return ResponseEntity.ok(voteDto);
+    }
+
+    @SneakyThrows
+    private String asString(VoteDto voteDto) {
+        return objectMapper.writeValueAsString(voteDto);
     }
 
     private String getVoterId(HttpServletRequest request) {
