@@ -8,8 +8,8 @@ spec:
   type: NodePort
   ports:
   - name: "vote-ui-api-service"
-    port: 5000
-    targetPort: 80
+    port: 8080
+    targetPort: 8080
     nodePort: 31000
   selector:
     app: vote-ui-api

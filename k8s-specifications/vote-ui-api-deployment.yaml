@@ -18,5 +18,5 @@ spec:
       - image: tomaszbozeksamples/votingapp_vote_ui_api
         name: vote-ui-api
         ports:
-        - containerPort: 80
+        - containerPort: 8080
           name: vote-ui-api
