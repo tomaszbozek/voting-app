@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: vote-worker-service
+  name: vote-worker-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-worker-service
+  template:
+    metadata:
+      labels:
+        app: vote-worker-service
+    spec:
+      containers:
+      - image: tomaszbozeksamples/votingapp_vote_worker_service
+        name: vote-worker-service

@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: vote-ui-api
+  name: vote-ui-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vote-ui-api
+  template:
+    metadata:
+      labels:
+        app: vote-ui-api
+    spec:
+      containers:
+      - image: tomaszbozeksamples/votingapp_vote_ui_api
+        name: vote-ui-api
+        ports:
+        - containerPort: 80
+          name: vote-ui-api
