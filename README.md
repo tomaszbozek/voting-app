@@ -2,11 +2,13 @@
 
 A simple distributed Java application running across multiple Docker containers.
 
+Based on docker example (kudos): https://github.com/dockersamples/example-voting-app
+
 ## Getting started
 
 Download [Docker Desktop](https://www.docker.com/products/docker-desktop) for Mac or Windows. [Docker Compose](https://docs.docker.com/compose) will be automatically installed. On Linux, make sure you have the latest version of [Compose](https://docs.docker.com/compose/install/).
 
-This solution uses Java, Spring, SpringBoot, Node.js, Redis for messaging and Postgres for storage.
+This solution uses Java, Spring, SpringBoot, Node.js, Angular.js, Redis for messaging and Postgres for storage.
 
 Run in this directory to build and run the app:
 
